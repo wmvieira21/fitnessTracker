@@ -1,0 +1,11 @@
+.nav-caption {
+  padding: 10px;
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+}
+
+.nav-icon {
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+}
