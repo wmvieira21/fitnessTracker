@@ -1,0 +1,10 @@
+<section class="dialog-container">
+  <h1>Are you sure?</h1>
+  <mat-dialog-content>
+    <p>You already got {{ data.progress }}%</p>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button [mat-dialog-close]="false">Yes</button>
+    <button mat-button [mat-dialog-close]="true">No</button>
+  </mat-dialog-actions>
+</section>
