@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/auth/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -7,6 +8,8 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent {
   @Output('onSidenavToggle') sidenavToggle = new EventEmitter();
+
+  constructor(public authService: AuthService) {}
 
   onToggle() {
     this.sidenavToggle.emit();
