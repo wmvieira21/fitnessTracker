@@ -1,18 +1,38 @@
 <mat-nav-list>
-    <a mat-list-item routerLink="/signup" (click)="onSidenavClose()">
-      <mat-icon class="nav-icon">face</mat-icon>
-      <span class="nav-caption">Signup</span>
-    </a>
-    <a mat-list-item routerLink="/login" (click)="onSidenavClose()">
-      <mat-icon class="nav-icon">login</mat-icon>
-      <span class="nav-caption">Login</span></a
-    >
-    <a mat-list-item routerLink="/training" (click)="onSidenavClose()">
-      <mat-icon class="nav-icon">fitness_center</mat-icon>
-      <span class="nav-caption">Training</span></a
-    >
-    <a mat-list-item (click)="onLogout()" (click)="onSidenavClose()">
-      <mat-icon class="nav-icon">logout</mat-icon>
-      <span class="nav-caption">Logout</span></a
-    >
-  </mat-nav-list>
+  <a
+    *ngIf="!(authService.isLoggedin | async)"
+    mat-list-item
+    routerLink="/signup"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon class="nav-icon">face</mat-icon>
+    <span class="nav-caption">Signup</span>
+  </a>
+  <a
+    *ngIf="!(authService.isLoggedin | async)"
+    mat-list-item
+    routerLink="/login"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon class="nav-icon">login</mat-icon>
+    <span class="nav-caption">Login</span></a
+  >
+  <a
+    *ngIf="authService.isLoggedin | async"
+    mat-list-item
+    routerLink="/training"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon class="nav-icon">fitness_center</mat-icon>
+    <span class="nav-caption">Training</span></a
+  >
+  <a
+    *ngIf="authService.isLoggedin | async"
+    mat-list-item
+    (click)="onLogout()"
+    (click)="onSidenavClose()"
+  >
+    <mat-icon class="nav-icon">logout</mat-icon>
+    <span class="nav-caption">Logout</span></a
+  >
+</mat-nav-list>

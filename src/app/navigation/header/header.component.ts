@@ -14,4 +14,8 @@ export class HeaderComponent {
   onToggle() {
     this.sidenavToggle.emit();
   }
+
+  onLogout(){
+    this.authService.logout();
+  }
 }

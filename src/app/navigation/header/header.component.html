@@ -19,7 +19,7 @@
         <a routerLink="/training">Training</a>
       </li>
       <li *ngIf="authService.isLoggedin | async">
-        <a href="">Logout</a>
+        <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
       </li>
     </ul>
   </div>
