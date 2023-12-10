@@ -44,7 +44,7 @@ export class AuthService {
 
   isAuth() {
     if (this.user == null) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
     }
     return this.user != null;
   }

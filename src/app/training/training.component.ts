@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { TrainingService } from './service/training.service';
 
 @Component({
   selector: 'app-training',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./training.component.css'],
 })
 export class TrainingComponent {
-  ongoningTraining = false;
+  constructor(public trainingService: TrainingService) {}
 }

@@ -30,7 +30,6 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log(this.form);
     this.authService.login(this.form.value);
   }
 }
