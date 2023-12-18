@@ -9,6 +9,7 @@ import {
   signInWithEmailAndPassword,
 } from '@angular/fire/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TrainingService } from 'src/app/training/service/training.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -16,14 +17,15 @@ export class AuthService {
   isLoggedin = new BehaviorSubject<boolean>(false);
   isAuth = false;
 
-  constructor(private router: Router, private _snackBar: MatSnackBar) {}
+  constructor(
+    private router: Router,
+    private _snackBar: MatSnackBar,
+    private trainingService: TrainingService
+  ) {}
 
   registerUser(data: AuthData) {
     createUserWithEmailAndPassword(this._auth, data.email, data.password)
       .then((result) => {
-        this.isAuth = true;
-        this.isLoggedin.next(true);
-        this.router.navigate(['/training']);
       })
       .catch((error) => {
         this.openSnackBar(error.message, 'OK');
@@ -33,19 +35,29 @@ export class AuthService {
   login(data: AuthData) {
     signInWithEmailAndPassword(this._auth, data.email, data.password)
       .then((result) => {
-        this.isAuth = true;
-        this.isLoggedin.next(true);
-        this.router.navigate(['/training']);
       })
       .catch((error) => {
         this.openSnackBar('Invalid credentials', 'OK');
       });
   }
 
+  initAuthListener() {
+    this._auth.onAuthStateChanged((user) => {
+      if (user) {
+        this.isAuth = true;
+        this.isLoggedin.next(true);
+        this.router.navigate(['/training']);
+      } else {
+        this.trainingService.cancelSubscriptions();
+
+        this.isAuth = false;
+        this.isLoggedin.next(false);
+        this.router.navigate(['/login']);
+      }
+    });
+  }
+
   logout() {
-    this.isAuth = false;
-    this.isLoggedin.next(false);
-    this.router.navigate(['/login']);
     this._auth.signOut();
   }
 

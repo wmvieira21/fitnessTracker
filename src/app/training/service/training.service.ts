@@ -1,6 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Exercise } from '../model/exercise.model';
-import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subscription,
+  map,
+  of,
+  switchMap,
+} from 'rxjs';
 import { inject } from '@angular/core';
 import {
   Firestore,
@@ -14,6 +21,8 @@ export class TrainingService {
   private firestore: Firestore = inject(Firestore);
   private exercisesList: Exercise[] = [];
   private currentExercise: Exercise;
+  private fbSubs: Subscription[] = [];
+
   isRuningExercise = new BehaviorSubject(false);
   exercisesListChanged = new BehaviorSubject<Exercise[]>([]);
   completedExercisesListChanged = new BehaviorSubject<Exercise[]>([]);
@@ -21,56 +30,54 @@ export class TrainingService {
   fetchAvailablesExercises() {
     const collect = collection(this.firestore, 'availableExercises');
 
-    collectionData(collect, {
-      idField: 'id',
-    })
-      .pipe(
-        map((document) => {
-          return document.map((exercise) => {
-            return {
-              id: exercise.id,
-              name: exercise['name'],
-              duration: exercise['duration'],
-              calories: exercise['calories'],
-            };
-          });
-        })
-      )
-      .subscribe(
-        (data) => {
+    this.fbSubs.push(
+      collectionData(collect, {
+        idField: 'id',
+      })
+        .pipe(
+          map((document) => {
+            return document.map((exercise) => {
+              return {
+                id: exercise.id,
+                name: exercise['name'],
+                duration: exercise['duration'],
+                calories: exercise['calories'],
+              };
+            });
+          })
+        )
+        .subscribe((data) => {
           this.exercisesList = data;
           this.exercisesListChanged.next([...this.exercisesList]);
-        },
-        (error) => console.log(error)
-      );
+        })
+    );
   }
 
   fetchCompletedExercises() {
     const collect = collection(this.firestore, 'finishedExercises');
 
-    collectionData(collect, {
-      idField: 'id',
-    })
-      .pipe(
-        map((document) => {
-          return document.map((exercise) => {
-            return {
-              id: exercise.id,
-              name: exercise['name'],
-              duration: exercise['duration'],
-              calories: exercise['calories'],
-              date: exercise['date'].toDate(),
-              state: exercise['state'],
-            };
-          });
-        })
-      )
-      .subscribe(
-        (data) => {
+    this.fbSubs.push(
+      collectionData(collect, {
+        idField: 'id',
+      })
+        .pipe(
+          map((document) => {
+            return document.map((exercise) => {
+              return {
+                id: exercise.id,
+                name: exercise['name'],
+                duration: exercise['duration'],
+                calories: exercise['calories'],
+                date: exercise['date'].toDate(),
+                state: exercise['state'],
+              };
+            });
+          })
+        )
+        .subscribe((data) => {
           this.completedExercisesListChanged.next(data);
-        },
-        (error) => console.log(error)
-      );
+        })
+    );
   }
 
   startExercise(id: string) {
@@ -96,6 +103,10 @@ export class TrainingService {
 
   getRuningExercise() {
     return { ...this.currentExercise };
+  }
+
+  cancelSubscriptions() {
+    this.fbSubs.forEach((sub) => sub.unsubscribe());
   }
 
   private addCompletedExercise() {
