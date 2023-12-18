@@ -18,6 +18,7 @@ import { StopTrainingDialogComponent } from './training/current-training/dialogs
 import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environments';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,7 @@ import { environment } from 'src/environments/environments';
     SignupComponent,
     HeaderComponent,
     SidenavListComponent,
-    StopTrainingDialogComponent
+    StopTrainingDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,9 +43,9 @@ import { environment } from 'src/environments/environments';
     ReactiveFormsModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
-    
+    provideAuth(() => getAuth()),
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

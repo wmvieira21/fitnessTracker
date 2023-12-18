@@ -10,7 +10,10 @@ import { AuthService } from '../service/auth.service';
 export class SignupComponent {
   maxDate = new Date();
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+
+  ) {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 

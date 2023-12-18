@@ -1,51 +1,57 @@
 import { Router } from '@angular/router';
 import { AuthData } from '../model/auth-data.model';
 import { User } from '../model/user.model';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from '@angular/fire/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private _auth = inject(Auth);
   isLoggedin = new BehaviorSubject<boolean>(false);
-  private user: User | null = null;
+  isAuth = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _snackBar: MatSnackBar) {}
 
   registerUser(data: AuthData) {
-    this.user = {
-      email: data.email,
-      userId: Math.round(Math.random() * 1000).toString(),
-    };
-
-    this.isLoggedin.next(true);
-    this.router.navigate(['/training']);
+    createUserWithEmailAndPassword(this._auth, data.email, data.password)
+      .then((result) => {
+        this.isAuth = true;
+        this.isLoggedin.next(true);
+        this.router.navigate(['/training']);
+      })
+      .catch((error) => {
+        this.openSnackBar(error.message, 'OK');
+      });
   }
 
   login(data: AuthData) {
-    this.user = {
-      email: data.email,
-      userId: Math.round(Math.random() * 1000).toString(),
-    };
-
-    this.isLoggedin.next(true);
-    this.router.navigate(['/training']);
+    signInWithEmailAndPassword(this._auth, data.email, data.password)
+      .then((result) => {
+        this.isAuth = true;
+        this.isLoggedin.next(true);
+        this.router.navigate(['/training']);
+      })
+      .catch((error) => {
+        this.openSnackBar('Invalid credentials', 'OK');
+      });
   }
 
   logout() {
-    this.user = null;
-
+    this.isAuth = false;
     this.isLoggedin.next(false);
     this.router.navigate(['/login']);
+    this._auth.signOut();
   }
 
-  getUser() {
-    return { ...this.user };
-  }
-
-  isAuth() {
-    if (this.user == null) {
-      this.router.navigate(['/login']);
-    }
-    return this.user != null;
+  private openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 5000,
+    });
   }
 }
