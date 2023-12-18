@@ -12,7 +12,11 @@ export class NewTrainingComponent {
   exercises: Exercise[];
 
   constructor(private trainingService: TrainingService) {
-    this.exercises = trainingService.getAvailablesExercises();
+    trainingService.fetchAvailablesExercises();
+
+    trainingService.exercisesListChange.subscribe((data) => {
+      this.exercises = data;
+    });
   }
 
   onStartNewTraining(form: NgForm) {

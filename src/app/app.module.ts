@@ -15,6 +15,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavListComponent } from './navigation/sidenav-list/sidenav-list.component';
 import { StopTrainingDialogComponent } from './training/current-training/dialogs/stop-training-dialog/stop-training-dialog.component';
+import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { environment } from 'src/environments/environments';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { StopTrainingDialogComponent } from './training/current-training/dialogs
     AppRoutingModule,
     FlexLayoutModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    provideFirebaseApp(() => initializeApp(environment.firebase)),
+    provideFirestore(() => getFirestore()),
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

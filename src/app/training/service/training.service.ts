@@ -1,31 +1,48 @@
 import { Injectable } from '@angular/core';
 import { Exercise } from '../model/exercise.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
+import { inject } from '@angular/core';
+import { Firestore, collectionData, collection } from '@angular/fire/firestore';
 
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
-  availableExercisesList: Exercise[] = [
-    { id: 'crounches', name: 'Crounches', duration: 5, calories: 8 },
-    { id: 'touch-toes', name: 'Touch Toes', duration: 180, calories: 10 },
-    { id: 'side-lunges', name: 'Side Lunges', duration: 120, calories: 18 },
-    { id: 'burpees', name: 'Burpees', duration: 60, calories: 8 },
-    { id: 'pull-ups', name: 'Pull Ups', duration: 60, calories: 8 },
-  ];
-
-  completedExercisesList: Exercise[] = [];
-
+  private firestore: Firestore = inject(Firestore);
+  private exercisesList: Exercise[] = [];
   private currentExercise: Exercise;
 
-  isRuningExercise = new BehaviorSubject(false);
+  private completedExercisesList: Exercise[] = [];
 
-  getAvailablesExercises() {
-    return this.availableExercisesList.slice();
+  isRuningExercise = new BehaviorSubject(false);
+  exercisesListChange = new BehaviorSubject([]);
+
+  fetchAvailablesExercises() {
+    const colection = collection(this.firestore, 'availableExercises');
+
+    collectionData(colection, {
+      idField: 'id',
+    })
+      .pipe(
+        map((document) => {
+          return document.map((exercise) => {
+            return {
+              id: exercise.id,
+              name: exercise['name'],
+              duration: exercise['duration'],
+              calories: exercise['calories'],
+            };
+          });
+        })
+      )
+      .subscribe((data) => {
+        this.exercisesList = data;
+        this.exercisesListChange.next([...this.exercisesList]);
+      });
+
+    return this.exercisesList.slice();
   }
 
   startExercise(id: string) {
-    const selectedExercise = this.availableExercisesList.find(
-      (data) => data.id === id
-    );
+    const selectedExercise = this.exercisesList.find((data) => data.id === id);
 
     if (selectedExercise) {
       this.currentExercise = selectedExercise;
