@@ -19,6 +19,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [],
@@ -42,6 +43,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    FlexLayoutModule
   ],
   exports: [
     BrowserModule,
@@ -64,6 +66,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
+    FlexLayoutModule
   ],
 })
 export class MaterialModule {}

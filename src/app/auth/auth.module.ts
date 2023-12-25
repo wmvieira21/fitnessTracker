@@ -3,10 +3,9 @@ import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/material.module';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [LoginComponent, SignupComponent],
-  imports: [BrowserModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule],
 })
-export class AuthModule {}
+export class AuthentincationModule {}

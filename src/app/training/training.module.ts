@@ -6,7 +6,6 @@ import { NewTrainingComponent } from './new-training/new-training.component';
 import { PastTrainingComponent } from './past-training/past-training.component';
 import { StopTrainingDialogComponent } from './current-training/dialogs/stop-training-dialog/stop-training-dialog.component';
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 
 @NgModule({
   declarations: [
@@ -16,6 +15,6 @@ import { BrowserModule } from '@angular/platform-browser';
     PastTrainingComponent,
     StopTrainingDialogComponent,
   ],
-  imports: [BrowserModule, MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [MaterialModule, FormsModule, ReactiveFormsModule],
 })
 export class TrainingModule {}
