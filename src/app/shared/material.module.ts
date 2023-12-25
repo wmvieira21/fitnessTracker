@@ -1,6 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -20,12 +18,12 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [],
   imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
@@ -43,11 +41,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
   exports: [
-    BrowserModule,
-    BrowserAnimationsModule,
+    CommonModule,
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
@@ -66,7 +63,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     MatSortModule,
     MatPaginatorModule,
     MatSnackBarModule,
-    FlexLayoutModule
+    FlexLayoutModule,
   ],
 })
 export class MaterialModule {}

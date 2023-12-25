@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { WellcomeComponent } from './wellcome/wellcome.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,9 +8,10 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { environment } from 'src/environments/environments';
 import { AuthModule, getAuth, provideAuth } from '@angular/fire/auth';
-import { TrainingModule } from './training/training.module';
 import { MaterialModule } from './shared/material.module';
 import { AuthentincationModule } from './auth/auth.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -22,10 +22,11 @@ import { AuthentincationModule } from './auth/auth.module';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AuthModule,
     MaterialModule,
     AuthentincationModule,
-    TrainingModule,
+    // TrainingModule, lazyloading
     AppRoutingModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),

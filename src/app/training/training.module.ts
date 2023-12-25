@@ -1,3 +1,5 @@
+import { NgModule } from '@angular/core';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../shared/material.module';
 import { TrainingComponent } from './training.component';
@@ -5,7 +7,7 @@ import { CurrentTrainingComponent } from './current-training/current-training.co
 import { NewTrainingComponent } from './new-training/new-training.component';
 import { PastTrainingComponent } from './past-training/past-training.component';
 import { StopTrainingDialogComponent } from './current-training/dialogs/stop-training-dialog/stop-training-dialog.component';
-import { NgModule } from '@angular/core';
+import { TrainingRoutingModule } from './training-routing.module';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,11 @@ import { NgModule } from '@angular/core';
     PastTrainingComponent,
     StopTrainingDialogComponent,
   ],
-  imports: [MaterialModule, FormsModule, ReactiveFormsModule],
+  imports: [
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TrainingRoutingModule,
+  ],
 })
 export class TrainingModule {}
