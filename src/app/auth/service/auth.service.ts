@@ -10,6 +10,7 @@ import {
 } from '@angular/fire/auth';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TrainingService } from 'src/app/training/service/training.service';
+import { UIService } from 'src/app/shared/ui-service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -19,25 +20,32 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    private _snackBar: MatSnackBar,
-    private trainingService: TrainingService
+    
+    private trainingService: TrainingService,
+    private uiservice: UIService
   ) {}
 
   registerUser(data: AuthData) {
+    this.uiservice.loadingStateChanded.next(true);
     createUserWithEmailAndPassword(this._auth, data.email, data.password)
       .then((result) => {
+        this.uiservice.loadingStateChanded.next(false);
       })
       .catch((error) => {
-        this.openSnackBar(error.message, 'OK');
+        this.uiservice.loadingStateChanded.next(false);
+        this.uiservice.openSnackBar('This email has already been register');
       });
   }
 
   login(data: AuthData) {
+    this.uiservice.loadingStateChanded.next(true);
     signInWithEmailAndPassword(this._auth, data.email, data.password)
       .then((result) => {
+        this.uiservice.loadingStateChanded.next(false);
       })
       .catch((error) => {
-        this.openSnackBar('Invalid credentials', 'OK');
+        this.uiservice.loadingStateChanded.next(false);
+        this.uiservice.openSnackBar('Invalid credentials');
       });
   }
 
@@ -59,11 +67,5 @@ export class AuthService {
 
   logout() {
     this._auth.signOut();
-  }
-
-  private openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 5000,
-    });
   }
 }

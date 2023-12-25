@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
+import { UIService } from 'src/app/shared/ui-service';
 
 @Component({
   selector: 'app-signup',
@@ -10,10 +11,7 @@ import { AuthService } from '../service/auth.service';
 export class SignupComponent {
   maxDate = new Date();
 
-  constructor(
-    private authService: AuthService,
-
-  ) {
+  constructor(private authService: AuthService, public uiService: UIService) {
     this.maxDate.setFullYear(this.maxDate.getFullYear() - 18);
   }
 

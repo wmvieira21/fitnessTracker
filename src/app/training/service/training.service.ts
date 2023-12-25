@@ -15,6 +15,7 @@ import {
   collection,
   addDoc,
 } from '@angular/fire/firestore';
+import { UIService } from 'src/app/shared/ui-service';
 
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
@@ -27,7 +28,10 @@ export class TrainingService {
   exercisesListChanged = new BehaviorSubject<Exercise[]>([]);
   completedExercisesListChanged = new BehaviorSubject<Exercise[]>([]);
 
+  constructor(private uiService: UIService) {}
+
   fetchAvailablesExercises() {
+    this.uiService.loadingTrainingStateChanded.next(true);
     const collect = collection(this.firestore, 'availableExercises');
 
     this.fbSubs.push(
@@ -46,10 +50,20 @@ export class TrainingService {
             });
           })
         )
-        .subscribe((data) => {
-          this.exercisesList = data;
-          this.exercisesListChanged.next([...this.exercisesList]);
-        })
+        .subscribe(
+          (data) => {
+            this.exercisesList = data;
+            this.exercisesListChanged.next([...this.exercisesList]);
+            this.uiService.loadingTrainingStateChanded.next(false);
+          },
+          (error) => {
+            this.exercisesListChanged.next(null);
+            this.uiService.loadingTrainingStateChanded.next(false);
+            this.uiService.openSnackBar(
+              'Fetaching exercises failed. Try realoading the page.'
+            );
+          }
+        )
     );
   }
 

@@ -6,6 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { AuthService } from '../service/auth.service';
+import { UIService } from 'src/app/shared/ui-service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ export class LoginComponent {
 
   constructor(
     private formBuilder: NonNullableFormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    public uiService : UIService
   ) {
     this.form = formBuilder.group({
       email: new FormControl(null, [Validators.required, Validators.email]),

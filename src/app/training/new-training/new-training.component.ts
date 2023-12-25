@@ -3,6 +3,7 @@ import { TrainingService } from '../service/training.service';
 import { Exercise } from '../model/exercise.model';
 import { Form, FormGroup, NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { UIService } from 'src/app/shared/ui-service';
 
 @Component({
   selector: 'app-new-training',
@@ -13,7 +14,7 @@ export class NewTrainingComponent implements OnDestroy {
   exercises: Exercise[];
   exercisesListChange: Subscription;
 
-  constructor(private trainingService: TrainingService) {
+  constructor(private trainingService: TrainingService, public uiService: UIService) {
     trainingService.fetchAvailablesExercises();
 
     this.exercisesListChange = trainingService.exercisesListChanged.subscribe(

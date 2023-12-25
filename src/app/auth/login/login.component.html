@@ -35,6 +35,7 @@
     </mat-form-field>
 
     <button
+      *ngIf="!(uiService.loadingStateChanded | async); else loadingSpinner"
       mat-raised-button
       color="primary"
       type="submit"
@@ -42,5 +43,8 @@
     >
       Submit
     </button>
+    <ng-template #loadingSpinner>
+      <mat-spinner></mat-spinner>
+    </ng-template>
   </form>
 </section>
