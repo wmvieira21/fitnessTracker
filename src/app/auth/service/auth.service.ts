@@ -20,7 +20,7 @@ export class AuthService {
 
   constructor(
     private router: Router,
-    
+
     private trainingService: TrainingService,
     private uiservice: UIService
   ) {}
@@ -51,6 +51,7 @@ export class AuthService {
 
   initAuthListener() {
     this._auth.onAuthStateChanged((user) => {
+      console.log(user);
       if (user) {
         this.isAuth = true;
         this.isLoggedin.next(true);
