@@ -9,16 +9,16 @@
   </div>
   <div fxFlex fxLayout fxLayoutAlign="flex-end" fxHide.xs>
     <ul fxLayout fxLayoutGap="15px" class="navigation-links">
-      <li *ngIf="!(authService.isLoggedin | async)">
+      <li *ngIf="!(authService.isAuth() | async)">
         <a routerLink="/signup">Sign Up</a>
       </li>
-      <li *ngIf="!(authService.isLoggedin | async)">
+      <li *ngIf="!(authService.isAuth() | async)">
         <a routerLink="/login">Login</a>
       </li>
-      <li *ngIf="authService.isLoggedin | async">
+      <li *ngIf="authService.isAuth() | async">
         <a routerLink="/training">Training</a>
       </li>
-      <li *ngIf="authService.isLoggedin | async">
+      <li *ngIf="authService.isAuth() | async">
         <a style="cursor: pointer;" (click)="onLogout()">Logout</a>
       </li>
     </ul>

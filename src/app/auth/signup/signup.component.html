@@ -67,7 +67,15 @@
       >
     </div>
 
-    <button   *ngIf="!(uiService.loadingStateChanded | async); else loadingSpinner" mat-raised-button color="primary" type="submit" [disabled]="f.invalid">Submit</button>
+    <button
+      *ngIf="!(isLoading$ | async); else loadingSpinner"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="f.invalid"
+    >
+      Submit
+    </button>
     <ng-template #loadingSpinner>
       <mat-spinner></mat-spinner>
     </ng-template>

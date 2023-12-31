@@ -1,13 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Exercise } from '../model/exercise.model';
-import {
-  BehaviorSubject,
-  Observable,
-  Subscription,
-  map,
-  of,
-  switchMap,
-} from 'rxjs';
+import { BehaviorSubject, Subscription, map } from 'rxjs';
 import { inject } from '@angular/core';
 import {
   Firestore,
@@ -16,6 +9,9 @@ import {
   addDoc,
 } from '@angular/fire/firestore';
 import { UIService } from 'src/app/shared/ui-service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { startLoading, stopLoading } from 'src/app/shared/ngrx/ui.action';
 
 @Injectable({ providedIn: 'root' })
 export class TrainingService {
@@ -28,10 +24,12 @@ export class TrainingService {
   exercisesListChanged = new BehaviorSubject<Exercise[]>([]);
   completedExercisesListChanged = new BehaviorSubject<Exercise[]>([]);
 
-  constructor(private uiService: UIService) {}
+  constructor(private uiService: UIService, private store: Store<AppState>) {}
 
   fetchAvailablesExercises() {
-    this.uiService.loadingTrainingStateChanded.next(true);
+    // this.uiService.loadingTrainingStateChanded.next(true);
+    this.store.dispatch(startLoading());
+
     const collect = collection(this.firestore, 'availableExercises');
 
     this.fbSubs.push(
@@ -54,11 +52,13 @@ export class TrainingService {
           (data) => {
             this.exercisesList = data;
             this.exercisesListChanged.next([...this.exercisesList]);
-            this.uiService.loadingTrainingStateChanded.next(false);
+            // this.uiService.loadingTrainingStateChanded.next(false);
+            this.store.dispatch(stopLoading());
           },
           (error) => {
             this.exercisesListChanged.next(null);
-            this.uiService.loadingTrainingStateChanded.next(false);
+            // this.uiService.loadingTrainingStateChanded.next(false);
+            this.store.dispatch(stopLoading());
             this.uiService.openSnackBar(
               'Fetaching exercises failed. Try realoading the page.'
             );

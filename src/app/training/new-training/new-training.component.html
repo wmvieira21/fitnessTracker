@@ -2,12 +2,7 @@
   <form (ngSubmit)="onStartNewTraining(form)" #form="ngForm">
     <mat-card fxFlex="800px" fxFlex.xs="400%">
       <mat-card-title fxLayoutAlign="center">Time to workout!</mat-card-title>
-      <div
-        *ngIf="
-          !(uiService.loadingTrainingStateChanded | async);
-          else loadingSpinner
-        "
-      >
+      <div *ngIf="!(isLoading$ | async); else loadingSpinner">
         <mat-card-content fxLayoutAlign="center">
           <mat-form-field>
             <mat-label>Exercise</mat-label>

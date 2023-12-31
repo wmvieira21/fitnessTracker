@@ -12,6 +12,8 @@ import { MaterialModule } from './shared/material.module';
 import { AuthentincationModule } from './auth/auth.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { StoreModule } from '@ngrx/store';
+import * as app from './app.reducer';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     provideFirebaseApp(() => initializeApp(environment.firebase)),
     provideFirestore(() => getFirestore()),
     provideAuth(() => getAuth()),
+    StoreModule.forRoot(app.reducers, {}),
   ],
   providers: [],
   bootstrap: [AppComponent],

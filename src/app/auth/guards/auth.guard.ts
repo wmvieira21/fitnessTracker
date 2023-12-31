@@ -3,12 +3,14 @@ import {
   CanActivateFn,
   RouterStateSnapshot,
 } from '@angular/router';
-import { AuthService } from '../service/auth.service';
 import { inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { getIsAuthSelector } from '../store/auth.selector';
 
 export const canActivateTeam: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
-  return inject(AuthService).isAuth;
+  return inject(Store<AppState>).select(getIsAuthSelector);
 };

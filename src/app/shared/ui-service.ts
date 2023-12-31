@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class UIService {
-  loadingStateChanded = new BehaviorSubject<boolean>(false);
+  // loadingStateChanded = new BehaviorSubject<boolean>(false);
   loadingTrainingStateChanded = new BehaviorSubject<boolean>(false);
 
   constructor(private _snackBar: MatSnackBar) {}

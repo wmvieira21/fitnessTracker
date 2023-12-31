@@ -1,20 +1,32 @@
-import { Component, EventEmitter, OnDestroy, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { TrainingService } from '../service/training.service';
 import { Exercise } from '../model/exercise.model';
 import { Form, FormGroup, NgForm } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { UIService } from 'src/app/shared/ui-service';
+import { Observable, Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.reducer';
+import { getIsLoading } from 'src/app/shared/ngrx/ui.selector';
 
 @Component({
   selector: 'app-new-training',
   templateUrl: './new-training.component.html',
   styleUrls: ['./new-training.component.css'],
 })
-export class NewTrainingComponent implements OnDestroy {
+export class NewTrainingComponent implements OnInit {
   exercises: Exercise[];
   exercisesListChange: Subscription;
+  isLoading$: Observable<boolean>;
 
-  constructor(private trainingService: TrainingService, public uiService: UIService) {
+  constructor(
+    private trainingService: TrainingService,
+    private store: Store<AppState>
+  ) {
     trainingService.fetchAvailablesExercises();
 
     this.exercisesListChange = trainingService.exercisesListChanged.subscribe(
@@ -28,7 +40,7 @@ export class NewTrainingComponent implements OnDestroy {
     this.trainingService.startExercise(form.value.exercise);
   }
 
-  ngOnDestroy(): void {
-    this.exercisesListChange.unsubscribe();
+  ngOnInit(): void {
+    this.isLoading$ = this.store.select(getIsLoading);
   }
 }
