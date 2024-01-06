@@ -8,6 +8,8 @@ import { NewTrainingComponent } from './new-training/new-training.component';
 import { PastTrainingComponent } from './past-training/past-training.component';
 import { StopTrainingDialogComponent } from './current-training/dialogs/stop-training-dialog/stop-training-dialog.component';
 import { TrainingRoutingModule } from './training-routing.module';
+import { StoreModule } from '@ngrx/store';
+import { trainingReducer } from './store/training.reducer';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { TrainingRoutingModule } from './training-routing.module';
     FormsModule,
     ReactiveFormsModule,
     TrainingRoutingModule,
+    StoreModule.forFeature('trainingState', trainingReducer),
   ],
 })
 export class TrainingModule {}

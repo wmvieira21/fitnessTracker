@@ -12,6 +12,8 @@ import { Observable, Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.reducer';
 import { getIsLoading } from 'src/app/shared/ngrx/ui.selector';
+import { getAvailableExercises } from '../store/training.selector';
+import { TrainingState } from '../store/training.reducer';
 
 @Component({
   selector: 'app-new-training',
@@ -19,22 +21,13 @@ import { getIsLoading } from 'src/app/shared/ngrx/ui.selector';
   styleUrls: ['./new-training.component.css'],
 })
 export class NewTrainingComponent implements OnInit {
-  exercises: Exercise[];
-  exercisesListChange: Subscription;
+  exercises: Observable<Exercise[]>;
   isLoading$: Observable<boolean>;
 
   constructor(
     private trainingService: TrainingService,
-    private store: Store<AppState>
-  ) {
-    trainingService.fetchAvailablesExercises();
-
-    this.exercisesListChange = trainingService.exercisesListChanged.subscribe(
-      (data) => {
-        this.exercises = data;
-      }
-    );
-  }
+    private store: Store<TrainingState>
+  ) {}
 
   onStartNewTraining(form: NgForm) {
     this.trainingService.startExercise(form.value.exercise);
@@ -42,5 +35,8 @@ export class NewTrainingComponent implements OnInit {
 
   ngOnInit(): void {
     this.isLoading$ = this.store.select(getIsLoading);
+
+    this.trainingService.fetchAvailablesExercises();
+    this.exercises = this.store.select(getAvailableExercises);
   }
 }

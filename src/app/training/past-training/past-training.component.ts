@@ -1,17 +1,19 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { Exercise } from '../model/exercise.model';
 import { TrainingService } from '../service/training.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { Subscription } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { TrainingState } from '../store/training.reducer';
+import { getCompletedExercises } from '../store/training.selector';
 
 @Component({
   selector: 'app-past-training',
   templateUrl: './past-training.component.html',
   styleUrls: ['./past-training.component.css'],
 })
-export class PastTrainingComponent implements AfterViewInit, OnDestroy {
+export class PastTrainingComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -25,17 +27,16 @@ export class PastTrainingComponent implements AfterViewInit, OnDestroy {
     'state',
   ];
 
-  completedExercisesListChanged: Subscription;
+  constructor(
+    private trainingService: TrainingService,
+    private store: Store<TrainingState>
+  ) {}
 
-  constructor(private trainingService: TrainingService) {
+  ngOnInit(): void {
     this.trainingService.fetchCompletedExercises();
-
-    this.completedExercisesListChanged =
-      trainingService.completedExercisesListChanged.subscribe((data) => {
-        if (data) {
-          this.dataSource.data = data;
-        }
-      });
+    this.store.select(getCompletedExercises).subscribe((data) => {
+      this.dataSource.data = data;
+    });
   }
 
   ngAfterViewInit(): void {
@@ -47,9 +48,5 @@ export class PastTrainingComponent implements AfterViewInit, OnDestroy {
     this.dataSource.filter = (filter as HTMLInputElement).value
       .trim()
       .toLowerCase();
-  }
-
-  ngOnDestroy(): void {
-    this.completedExercisesListChanged.unsubscribe();
   }
 }
